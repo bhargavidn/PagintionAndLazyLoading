@@ -9,11 +9,31 @@ export class PaginationComp extends Component {
         super(props);
         this.state = {
             pageLimit: 5,
-            data: pageData
+            pageData,
+            currentPage: 1            
         }
     }
-    
-    renderPageData = () =>  pageData.map((item) => (   
+    setCurrentPage = (event) => {
+        this.setState({
+            currentPage: Number(event.target.textContent)
+        })
+    }
+    prevClickHandler = () => {
+        const newPageNumber = this.state.currentPage === 1 ? 1 : this.state.currentPage-1;
+        console.log("newPageNumber",newPageNumber);
+        this.setState({
+            currentPage: newPageNumber
+        });
+    }
+    nextClickHandler = () => {
+        const {pageLimit, pageData} = this.state;
+        const lastPageNumber = Math.ceil(pageData.length/pageLimit)
+        const newPageNumber = this.state.currentPage === lastPageNumber ? lastPageNumber : this.state.currentPage + 1;
+        this.setState({
+            currentPage: newPageNumber
+        });
+    }
+    renderPageData = (currentPageData) =>  currentPageData.map((item) => (   
     <ul className="list-group" key={item.Albums}>
         <li className="list-group-item">
         <div className='row'  key={item.Albums}>
@@ -28,20 +48,24 @@ export class PaginationComp extends Component {
     </ul> ));            
     
     render() {
-        const pageNumbers = [];
-        //page numbers will be (total num of rec / pagelimit)
-        for(let i=1; i<=Math.ceil(this.state.data.length/this.state.pageLimit); i++) {
-            pageNumbers.push(i);
-        }
-        console.log("pageNumbers",pageNumbers);
+        const {pageLimit, currentPage, pageData} = this.state;
+        const indexOfLastPage = currentPage * pageLimit;
+        const indexOfFirstPage = indexOfLastPage - pageLimit;
+        const currentPageData = pageData.slice(indexOfFirstPage, indexOfLastPage)
         return (
             <div className="row pt-sm-4 ml-sm-3">
                 <div className="col-sm-2 ">
                     <ConfigComp />
                 </div>
                 <div className="col-sm-10 ">
-                    {this.renderPageData()}
-                    <PageNumberComp pageNumbers={pageNumbers}/>
+                    {this.renderPageData(currentPageData)}
+                    <PageNumberComp 
+                        totalRec={pageData.length} 
+                        pageLimit={pageLimit}
+                        pageClickEvent={this.setCurrentPage}
+                        currentPage={currentPage} 
+                        prevClickHandler={this.prevClickHandler}
+                        nextClickHandler={this.nextClickHandler}/> 
                     
                 </div>
             </div>

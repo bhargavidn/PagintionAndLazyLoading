@@ -14,7 +14,7 @@ export class configComp extends Component {
             <hr/>
                 <form>
                     <div className="radio" >
-                        <label><input type="radio" name="displayType" value="P" checked onClick={this.changeDisplayType}/>
+                        <label><input type="radio" name="displayType" value="P" defaultChecked onClick={this.changeDisplayType}/>
                             <span className='pl-sm-2'>Pagination</span>
                         </label>
 

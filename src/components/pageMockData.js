@@ -59,5 +59,29 @@ export const pageData =
         Title : "The fault is the most intense pleasure reject hatred" ,
         URL : " https://via.placeholder.com/600/d32776 " ,
         thumbnailUrl : " https://via.placeholder.com/150/d32776 "
-      }
+      },
+      {
+        Albums : 11, 
+        Title : "The fault is the most intense pleasure reject hatred" ,
+        URL : " https://via.placeholder.com/600/d32776 " ,
+        thumbnailUrl : " https://via.placeholder.com/150/d32776 "
+      },
+      {
+        Albums : 12, 
+        Title : "The fault is the most intense pleasure reject hatred" ,
+        URL : " https://via.placeholder.com/600/d32776 " ,
+        thumbnailUrl : " https://via.placeholder.com/150/d32776 "
+      },
+      {
+        Albums : 13, 
+        Title : "The fault is the most intense pleasure reject hatred" ,
+        URL : " https://via.placeholder.com/600/d32776 " ,
+        thumbnailUrl : " https://via.placeholder.com/150/d32776 "
+      },
+      {
+        Albums : 14, 
+        Title : "The fault is the most intense pleasure reject hatred" ,
+        URL : " https://via.placeholder.com/600/d32776 " ,
+        thumbnailUrl : " https://via.placeholder.com/150/d32776 "
+      },
   ]
