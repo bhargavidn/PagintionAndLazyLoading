@@ -3,11 +3,12 @@ import PaginationComp from './PaginationComp'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="container-fluid">
+      <h2 className="text-center mt-sm-3">
         Sample Pagination
-        <PaginationComp />
-      </header>
+      </h2>
+      <PaginationComp />
+
     </div>
   );
 }
