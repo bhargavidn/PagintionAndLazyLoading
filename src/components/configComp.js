@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import setDisplayType from '../actions';
-import { connect } from 'react-redux';
+// import setDisplayType from '../actions';
+// import { connect } from 'react-redux';
 
-export class configComp extends Component {
+export default class extends Component {
    
-    changeDisplayType = (event) => {
-        this.props.setDisplayType(event.target.value==='P' ? true : false)
-    }
+    // changeDisplayType = (event) => {
+    //     this.props.setDisplayType(event.target.value==='P' ? true : false)
+    // }
     render() {
         return (
             <div className="pt-sm-0 align-middle"> 
@@ -14,13 +14,13 @@ export class configComp extends Component {
             <hr/>
                 <form>
                     <div className="radio" >
-                        <label><input type="radio" name="displayType" value="P" defaultChecked onClick={this.changeDisplayType}/>
+                        <label><input type="radio" name="displayType" value="P" defaultChecked onClick={this.props.changeDisplayType}/>
                             <span className='pl-sm-2'>Pagination</span>
                         </label>
 
                     </div>
                     <div className="radio">
-                        <label><input type="radio" name="displayType" value="L" onClick={this.changeDisplayType}/> 
+                        <label><input type="radio" name="displayType" value="L" onClick={this.props.changeDisplayType}/> 
                             <span className='pl-sm-2'>Lazy Loading</span>
                         </label>
                         
@@ -32,8 +32,8 @@ export class configComp extends Component {
     }
 };
 
-const mapDispatchToProps = {
-setDisplayType
-}
+// const mapDispatchToProps = {
+// setDisplayType
+// }
     
-export default connect(null,mapDispatchToProps)(configComp);
+// export default connect(null,mapDispatchToProps)(configComp);

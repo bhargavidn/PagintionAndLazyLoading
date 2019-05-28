@@ -1,40 +1,73 @@
 import React,{Component} from 'react';
-import {connect} from 'react-redux';
 import {pageData} from './pageMockData';
 import ConfigComp from './configComp';
 import PageNumberComp from './pageNumberComp';
+import LazyLoadingComp from './lazyLoadingComp';
 
-export class PaginationComp extends Component {
+
+const initialState ={
+    pageLimit: 5,
+    pageData,
+    currentPage: 1,
+    loadingState: false,
+    isPaginationRequired: true,
+    currentPageData:  pageData.slice(0, 5)
+}
+export default class extends Component {
+    
     constructor(props) {
         super(props);
-        this.state = {
-            pageLimit: 5,
-            pageData,
-            currentPage: 1            
-        }
+        this.state = initialState;
     }
-    setCurrentPage = (event) => {
+
+    changeDisplayType = (event) => {
+        const isPaginationRequired = event.target.value==='P' ? true : false;
         this.setState({
-            currentPage: Number(event.target.textContent)
-        })
+            ...initialState,
+            isPaginationRequired
+            
+        });
+    }
+
+    loadMoreItems = () => {  
+        if(this.state.loadingState){
+            return;
+        }      
+        
+            this.setState({loadingState: true});
+         
+        setTimeout(() => {
+            this.setPageState(this.state.currentPage + 1)
+        }, 1000);
+
+    }
+    setPageState = (newPageNumber) => {
+        const {pageLimit, pageData} = this.state;
+        const indexOfLastPage = newPageNumber * pageLimit;
+        const indexOfFirstPage = indexOfLastPage - pageLimit;
+        const currentPageData = this.state.isPaginationRequired ? pageData.slice(indexOfFirstPage, indexOfLastPage) : pageData.slice(0, newPageNumber*pageLimit)
+
+        this.setState({
+            currentPage: newPageNumber,
+            currentPageData,
+            loadingState: false
+        }); 
+    }
+
+    setCurrentPage = (event) => {
+        this.setPageState(Number(event.target.textContent));
     }
     prevClickHandler = () => {
-        const newPageNumber = this.state.currentPage === 1 ? 1 : this.state.currentPage-1;
-        console.log("newPageNumber",newPageNumber);
-        this.setState({
-            currentPage: newPageNumber
-        });
+        const newPageNumber = this.state.currentPage === 1 ? 1 : this.state.currentPage-1;       
+        this.setPageState(newPageNumber);
     }
     nextClickHandler = () => {
         const {pageLimit, pageData} = this.state;
         const lastPageNumber = Math.ceil(pageData.length/pageLimit)
         const newPageNumber = this.state.currentPage === lastPageNumber ? lastPageNumber : this.state.currentPage + 1;
-        this.setState({
-            currentPage: newPageNumber
-        });
+        this.setPageState(newPageNumber);
     }
     renderPageData = (currentPageData) =>  currentPageData.map((item) => (   
-    <ul className="list-group" key={item.Albums}>
         <li className="list-group-item">
         <div className='row'  key={item.Albums}>
             <div className='col-sm-2'>
@@ -45,20 +78,21 @@ export class PaginationComp extends Component {
             </div>
         </div>
         </li>   
-    </ul> ));            
+    ));            
     
     render() {
-        const {pageLimit, currentPage, pageData} = this.state;
-        const indexOfLastPage = currentPage * pageLimit;
-        const indexOfFirstPage = indexOfLastPage - pageLimit;
-        const currentPageData = pageData.slice(indexOfFirstPage, indexOfLastPage)
+        const {pageLimit, currentPage, loadingState, pageData, currentPageData,isPaginationRequired} = this.state;
+        console.log("loadingState", loadingState,"currentPage", currentPage)
         return (
             <div className="row pt-sm-4 ml-sm-3">
                 <div className="col-sm-2 ">
-                    <ConfigComp />
+                    <ConfigComp changeDisplayType={this.changeDisplayType}/>
                 </div>
                 <div className="col-sm-10 ">
-                    {this.renderPageData(currentPageData)}
+                    <ul className="list-group" >
+                        {this.renderPageData(currentPageData)}
+                    </ul>
+                    {isPaginationRequired ?
                     <PageNumberComp 
                         totalRec={pageData.length} 
                         pageLimit={pageLimit}
@@ -66,15 +100,11 @@ export class PaginationComp extends Component {
                         currentPage={currentPage} 
                         prevClickHandler={this.prevClickHandler}
                         nextClickHandler={this.nextClickHandler}/> 
-                    
+                    :
+                    <LazyLoadingComp loadingState={loadingState} loadMoreItems={this.loadMoreItems}
+                    />}
                 </div>
             </div>
         )
     }
 }
-
-const mapStateToProps = (state) => ({
-    appData: state
-});
-
-export default connect(mapStateToProps)(PaginationComp);

@@ -1,12 +1,9 @@
-import React,{ Component } from 'react';
+import React from 'react';
 
-export default class extends Component {
+const lazyLoadingFunc = ({loadMoreItems,loadingState}) => (
+    <div>
+        {loadingState ? <h4> Loading... </h4> : <button className='btn btn-link' onClick={loadMoreItems}>Show More</button>}
+    </div>
+)
 
-    render() {
-        return (
-            <div>
-                Show More
-            </div>
-        )
-    }
-}
+export default lazyLoadingFunc;
